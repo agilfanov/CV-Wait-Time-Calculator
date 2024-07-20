@@ -25,18 +25,6 @@ public:
         return {min(a.x, b.x) - extra, min(a.y, b.y) - extra, max(a.x, b.x) - min(a.x, b.x) + 2 * extra, min(a.y, b.y) - min(a.y, b.y) + 2 * extra};
     }
 
-    static int get_hue(Mat& image, int x, int y) {
-        return image.at<Vec3b>(y, x)[0];
-    }
-
-    static int get_saturation(Mat& image, int x, int y) {
-        return image.at<Vec3b>(y, x)[1];
-    }
-
-    static int get_value(Mat& image, int x, int y) {
-        return image.at<Vec3b>(y, x)[2];
-    }
-
     static pair<double, vector<Point>> convex_hull_area(vector<Point>& points) {
 
         vector<Point> hull {};

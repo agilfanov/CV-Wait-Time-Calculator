@@ -7,7 +7,9 @@ add_executable(OpenCvProject main.cpp
         Calculate.cpp
         Color.cpp
         Movement.cpp
-        PointID.cpp)
+        PointID.cpp
+        Vision.cpp
+        Line.cpp)
 target_link_libraries( OpenCvProject  ${OpenCV_LIBS})
 set(CMAKE_CXX_STANDARD 17)
 

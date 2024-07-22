@@ -38,7 +38,7 @@ private:
 public:
 
 
-    Vision(int epsilon, int min_neighbors, double learning_rate, int x_space, int y_space, int banned_time, int banned_extra_space, int min_object_size, Size native_camera_resolution) {
+    Vision(int epsilon, int min_neighbors, double learning_rate, int x_space, int y_space, int banned_time, int banned_extra_space, int min_object_size, Size native_camera_resolution, int threshold) {
         this->epsilon = epsilon;
         this->min_neighbors = min_neighbors;
         this->learning_rate = learning_rate;
@@ -47,7 +47,7 @@ public:
         this->banned_time = banned_time;
         this->banned_extra_space = banned_extra_space;
         this->min_object_size = min_object_size;
-
+        this->threshold = threshold;
         double ratio = (double)native_camera_resolution.width / native_camera_resolution.height;
         resolution.width = 192;
         resolution.height = (int)((double)192 / ratio);
@@ -55,14 +55,13 @@ public:
     }
 
     Vision() {
-        *this = Vision(10, 4, 0.05, 5, 5, 5, 5, 300, {1920, 1080});
+        *this = Vision(10, 4, 0.05, 5, 5, 5, 5, 300, {1920, 1080}, 96);
     }
 
 
     void start_camera(int camera_index) {
         people_left_of_line = 0;
         camera = VideoCapture(camera_index);
-        threshold = 96;
         prevFrame.assign({});
         banned.assign({});
         Movement movement (learning_rate);
@@ -70,7 +69,8 @@ public:
 
     }
 
-    void run_one_frame(string text) {
+
+    void run_one_frame(string& text) {
         clock++;
         Mat frame;
         camera >> frame;
@@ -116,7 +116,7 @@ public:
         }
         prevFrame = curr_frame;
 
-
+        people_left_of_line = max(people_left_of_line, 0);
         putText(frame, "Left of Line: " + to_string(people_left_of_line), {0, 10}, FONT_HERSHEY_PLAIN, 1, Scalar(255, 255, 0), 1);
         putText(frame, text, {0, 25}, FONT_HERSHEY_PLAIN, 1, Scalar(255, 255, 0), 1);
 

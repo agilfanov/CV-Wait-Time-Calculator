@@ -7,21 +7,20 @@ using namespace cv;
 
 class Movement {
 
-
 private:
     Ptr<BackgroundSubtractor> detector;
     Mat mask;
     double learning_rate;
 public:
 
-    Movement() {
-        this->learning_rate = 0.05;
+
+    explicit Movement(double learning_rate) {
+        this->learning_rate = learning_rate;
         detector = createBackgroundSubtractorMOG2();
     }
 
-    Movement(double learning_rate) {
-        this->learning_rate = learning_rate;
-        detector = createBackgroundSubtractorMOG2();
+    Movement() {
+        *this = Movement(0.05);
     }
 
     vector<Point> get_movement(Mat& frame) {
@@ -35,12 +34,10 @@ public:
                 uchar pixelValue = mask.at<uchar>(y, x);
 
                 if (pixelValue == 255) {
-                    points.emplace_back(x, y); //
+                    points.emplace_back(x, y);
                 }
             }
         }
         return points;
     }
-
-
 };

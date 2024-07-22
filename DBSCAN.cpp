@@ -13,10 +13,10 @@ private:
     const int UNDEFINED = -1;
 
     vector<PointID> points;
-    vector<vector<int>> adj; // stores adj pointID
+    vector<vector<int>> adj;
     double epsilon;
     int min_neighbors;
-    vector<int> cluster; // point id
+    vector<int> cluster;
     vector<vector<int>> by_cluster;
     int cluster_count;
 
@@ -39,7 +39,6 @@ private:
         }
     }
 
-
 public:
 
     DBSCAN(vector<Point>& points, double epsilon, int min_neighbors) {
@@ -55,16 +54,13 @@ public:
 
         set_up_neighbors();
         cluster_count = 0;
-
     }
-
 
     void run_dbscan() {
         cluster_count = 0;
         by_cluster.assign(points.size() + 1, {});
-        for (auto& point: points) { // n
+        for (auto& point: points) {
             if (cluster[point.id] != UNDEFINED) continue;
-
 
             if (adj[point.id].size() < min_neighbors) {
                 cluster[point.id] = NOISE;
@@ -95,7 +91,7 @@ public:
 
     int get_cluster_count() const {return cluster_count;}
 
-    vector<Point> draw_clusters(Mat& image, int min_cluster_area) { // run a convex hull maybe of the cluster to see its size
+    vector<Point> draw_clusters(Mat& image, int min_cluster_area) {
         vector<Point> means;
         for (int i = 1; i <= cluster_count; i++) {
 
@@ -120,14 +116,8 @@ public:
                 for (int j = 1; j < hull.second.size(); j++) {
                     line(image, hull.second[j - 1], hull.second[j], colors[i % colors.size()], 3);
                 }
-
             }
-
-
         }
-
         return means;
     }
-
-
 };

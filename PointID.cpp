@@ -1,4 +1,3 @@
-
 class PointID {
 public:
     int x;
